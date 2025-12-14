@@ -1,0 +1,764 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>For My Love, Diksha ❤️</title>
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Outfit:wght@200;300;400;600&family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap"
+        rel="stylesheet">
+    <!-- Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <style>
+        :root {
+            --primary: #ff3366;
+            --accent: #ff99cc;
+            --dark: #0f172a;
+            --glass: rgba(255, 255, 255, 0.05);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --text-main: #ffffff;
+            --text-muted: #94a3b8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            background-color: var(--dark);
+            color: var(--text-main);
+            min-height: 100vh;
+            overflow-x: hidden;
+            /* Custom sleek cursor */
+            cursor: none;
+        }
+
+        /* Custom Cursor */
+        .cursor-dot,
+        .cursor-outline {
+            position: fixed;
+            top: 0;
+            left: 0;
+            transform: translate(-50%, -50%);
+            border-radius: 50%;
+            z-index: 9999;
+            pointer-events: none;
+        }
+
+        .cursor-dot {
+            width: 8px;
+            height: 8px;
+            background-color: var(--primary);
+        }
+
+        .cursor-outline {
+            width: 40px;
+            height: 40px;
+            border: 2px solid var(--primary);
+            transition: width 0.2s, height 0.2s, background-color 0.2s;
+        }
+
+        /* Canvas Background */
+        #webgl-bg {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+            position: relative;
+            z-index: 1;
+        }
+
+        /* Typography */
+        h1,
+        h2,
+        h3 {
+            font-family: 'Playfair Display', serif;
+        }
+
+        h1 {
+            font-size: clamp(3rem, 8vw, 6rem);
+            line-height: 1.1;
+            margin-bottom: 1rem;
+            background: linear-gradient(135deg, #fff 0%, #ff99cc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            opacity: 0;
+            /* JS fade in */
+        }
+
+        .subtitle {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            font-weight: 300;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 2rem;
+            opacity: 0;
+        }
+
+        /* Glassmorphism Cards */
+        .glass-card {
+            background: var(--glass);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            padding: 2.5rem;
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.27), border-color 0.3s;
+        }
+
+        .glass-card:hover {
+            border-color: rgba(255, 51, 102, 0.5);
+            transform: translateY(-5px);
+        }
+
+        /* Header Section */
+        header {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            animation: bounce 2s infinite;
+            opacity: 0;
+        }
+
+        @keyframes bounce {
+
+            0%,
+            20%,
+            50%,
+            80%,
+            100% {
+                transform: translateY(0);
+            }
+
+            40% {
+                transform: translateY(-10px);
+            }
+
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+
+        /* Grid Layouts */
+        .grid-3 {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin: 4rem 0;
+        }
+
+        .feature-icon {
+            font-size: 2.5rem;
+            color: var(--primary);
+            margin-bottom: 1.5rem;
+            background: rgba(255, 51, 102, 0.1);
+            width: 80px;
+            height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 20px;
+            transition: all 0.3s;
+        }
+
+        .glass-card:hover .feature-icon {
+            background: var(--primary);
+            color: white;
+            transform: rotateY(180deg);
+        }
+
+        /* Love Letter Section */
+        .love-letter-section {
+            margin: 8rem 0;
+            position: relative;
+        }
+
+        .love-letter {
+            max-width: 800px;
+            margin: 0 auto;
+            position: relative;
+            padding: 4rem;
+        }
+
+        .love-letter p {
+            font-size: 1.15rem;
+            line-height: 1.8;
+            margin-bottom: 1.5rem;
+            color: #cbd5e1;
+        }
+
+        .quote-mark {
+            position: absolute;
+            font-family: 'Playfair Display', serif;
+            font-size: 12rem;
+            color: rgba(255, 255, 255, 0.03);
+            line-height: 1;
+        }
+
+        .quote-left {
+            top: -2rem;
+            left: 1rem;
+        }
+
+        .quote-right {
+            bottom: -6rem;
+            right: 1rem;
+        }
+
+        /* Interactive Buttons */
+        .action-grid {
+            display: flex;
+            justify-content: center;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            margin: 4rem 0;
+        }
+
+        .glow-btn {
+            background: transparent;
+            border: 1px solid var(--primary);
+            color: var(--primary);
+            padding: 1rem 2rem;
+            border-radius: 100px;
+            cursor: pointer;
+            /* fallback */
+            font-family: 'Outfit', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.9rem;
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+            z-index: 10;
+        }
+
+        .glow-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--primary);
+            z-index: -1;
+            transform: scaleX(0);
+            transform-origin: right;
+            transition: transform 0.4s cubic-bezier(0.77, 0, 0.175, 1);
+        }
+
+        .glow-btn:hover {
+            color: white;
+            box-shadow: 0 0 20px rgba(255, 51, 102, 0.4);
+        }
+
+        .glow-btn:hover::before {
+            transform: scaleX(1);
+            transform-origin: left;
+        }
+
+        /* Gallery */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2rem;
+            margin: 6rem 0;
+        }
+
+        .photo-card {
+            position: relative;
+            height: 350px;
+            border-radius: 20px;
+            overflow: hidden;
+            cursor: pointer;
+        }
+
+        .photo-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(45deg, #1e293b, #0f172a);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: rgba(255, 255, 255, 0.1);
+            transition: transform 0.5s;
+        }
+
+        .photo-card:hover .photo-bg {
+            transform: scale(1.1);
+        }
+
+        .photo-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            padding: 2rem;
+            background: linear-gradient(to top, rgba(0, 0, 0, 0.9), transparent);
+            transform: translateY(100%);
+            transition: transform 0.4s;
+        }
+
+        .photo-card:hover .photo-overlay {
+            transform: translateY(0);
+        }
+
+        /* Love Meter Redesign */
+        .meter-section {
+            text-align: center;
+            padding: 4rem 0;
+        }
+
+        .cyber-meter {
+            width: 100%;
+            max-width: 600px;
+            height: 4px;
+            background: rgba(255, 255, 255, 0.1);
+            margin: 3rem auto;
+            position: relative;
+            border-radius: 2px;
+            overflow: hidden;
+        }
+
+        .cyber-fill {
+            position: absolute;
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 0%;
+            background: var(--primary);
+            box-shadow: 0 0 15px var(--primary);
+            transition: width 0.1s linear;
+        }
+
+        .meter-stat {
+            font-size: 4rem;
+            font-family: 'Playfair Display', serif;
+            color: var(--primary);
+            margin-top: 1rem;
+        }
+
+        /* Modal */
+        .modal {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.8);
+            backdrop-filter: blur(20px);
+            z-index: 10000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .modal.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .modal-content {
+            text-align: center;
+            transform: translateY(30px);
+            transition: transform 0.5s;
+        }
+
+        .modal.active .modal-content {
+            transform: translateY(0);
+        }
+
+        footer {
+            text-align: center;
+            padding: 4rem 0;
+            border-top: 1px solid var(--glass-border);
+            color: var(--text-muted);
+            margin-top: 4rem;
+        }
+
+        /* Helper Classes */
+        .text-gradient {
+            background: linear-gradient(135deg, #ff3366 0%, #ff99cc 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- 3D Canvas -->
+    <canvas id="webgl-bg"></canvas>
+
+    <!-- Custom Cursor -->
+    <div class="cursor-dot"></div>
+    <div class="cursor-outline"></div>
+
+    <div class="container">
+
+        <header>
+            <div class="subtitle">It is built for you</div>
+            <h1>For My Dearest<br>Diksha</h1>
+            <p style="font-size: 1.2rem; color: #94a3b8; margin-top: 1rem;">Welcome to your digital universe</p>
+            <div class="scroll-indicator">
+                <i class="fas fa-chevron-down" style="color: var(--text-muted);"></i>
+            </div>
+        </header>
+
+        <!-- Sections -->
+        <h2 style="text-align: center; font-size: 2.5rem; margin-top: 2rem;">Why You?</h2>
+        <div class="grid-3">
+            <div class="glass-card element-animate">
+                <div class="feature-icon"><i class="fas fa-heart"></i></div>
+                <h3>Our Connection</h3>
+                <p style="margin-top: 1rem; color: #cbd5e1;">Every moment with you feels like a suspended reality.
+                    You've brought magic, joy, and profound love into my existence.</p>
+            </div>
+            <div class="glass-card element-animate">
+                <div class="feature-icon"><i class="fas fa-star"></i></div>
+                <h3>Your Radiance</h3>
+                <p style="margin-top: 1rem; color: #cbd5e1;">Your intelligence and kindness shine brighter than any
+                    constellation. You amaze me every single day.</p>
+            </div>
+            <div class="glass-card element-animate">
+                <div class="feature-icon"><i class="fas fa-infinity"></i></div>
+                <h3>My Promise</h3>
+                <p style="margin-top: 1rem; color: #cbd5e1;">To stand by you through every timeline, support your
+                    dreams, and love you exponentially forever.</p>
+            </div>
+        </div>
+
+        <!-- Love Letter -->
+        <div class="love-letter-section">
+            <div class="glass-card love-letter element-animate">
+                <span class="quote-mark quote-left">"</span>
+                <h2 style="text-align: center; margin-bottom: 2rem; color: var(--primary);">My Vow to You</h2>
+                <div class="letter-content">
+                    <p>My Dearest Diksha,</p>
+                    <p>From the moment you entered my life, the world shifted axis. Your laughter is my favorite
+                        frequency, and your presence is my only home.</p>
+                    <p>I admire the fire in your eyes when you speak of your passions. I love how you intuitively know
+                        how to heal my spirit. You are strength and compassion personified.</p>
+                    <p>With you, the mundane becomes an adventure. Whether we are conquering the world or sharing
+                        silence, I cherish every quantum of time.</p>
+                    <p>You are my singularity, my favorite anomaly, my forever.</p>
+                    <p
+                        style="text-align: right; margin-top: 2rem; font-family: 'Playfair Display'; font-size: 1.5rem; color: var(--primary);">
+                        Yours always ❤️</p>
+                </div>
+                <span class="quote-mark quote-right">"</span>
+            </div>
+        </div>
+
+        <!-- Interactive Actions -->
+        <div class="action-grid element-animate">
+            <button class="glow-btn" onclick="showMessage('message')">Send Love</button>
+            <button class="glow-btn" onclick="showMessage('kiss')">Digital Kiss</button>
+            <button class="glow-btn" onclick="showMessage('flower')">Virtual Flowers</button>
+            <button class="glow-btn" onclick="showMessage('music')">Play Melody</button>
+        </div>
+
+        <!-- Kinetic Gallery -->
+        <h2 style="text-align: center; font-size: 2.5rem;">Visual Memories</h2>
+        <div class="gallery-grid">
+            <div class="photo-card element-animate">
+                <div class="photo-bg"><i class="fas fa-camera"></i></div>
+                <div class="photo-overlay">
+                    <h3>The Beginning</h3>
+                    <p>Where it all started.</p>
+                </div>
+            </div>
+            <div class="photo-card element-animate">
+                <div class="photo-bg"><i class="fas fa-smile-beam"></i></div>
+                <div class="photo-overlay">
+                    <h3>Your Smile</h3>
+                    <p>My favorite view.</p>
+                </div>
+            </div>
+            <div class="photo-card element-animate">
+                <div class="photo-bg"><i class="fas fa-plane"></i></div>
+                <div class="photo-overlay">
+                    <h3>Adventures</h3>
+                    <p>Exploring the world together.</p>
+                </div>
+            </div>
+            <div class="photo-card element-animate">
+                <div class="photo-bg"><i class="fas fa-hand-holding-heart"></i></div>
+                <div class="photo-overlay">
+                    <h3>Forever</h3>
+                    <p>Walking hand in hand.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Data Viz / Meter -->
+        <div class="glass-card meter-section element-animate">
+            <h2>Love Quantification</h2>
+            <p style="color: #94a3b8; margin-bottom: 2rem;">Analyzing emotional capacity...</p>
+
+            <div class="cyber-meter">
+                <div class="cyber-fill" id="meterFill"></div>
+            </div>
+            <div class="meter-stat" id="meterValue">0%</div>
+
+            <button class="glow-btn" id="runAnalysis" style="margin-top: 2rem;">Initiate Scan</button>
+        </div>
+
+        <div style="text-align: center; margin: 4rem 0;">
+            <button class="glow-btn" id="finalSurprise" style="padding: 1.5rem 3rem; font-size: 1.2rem;">
+                Classified Surprise <i class="fas fa-lock" style="margin-left: 10px;"></i>
+            </button>
+        </div>
+
+        <footer>
+            <p>Architected with <i class="fas fa-heart text-gradient"></i> for Diksha</p>
+            <p style="font-size: 0.9rem; margin-top: 0.5rem;">Est. 2025 • Infinite Loop</p>
+        </footer>
+
+    </div>
+
+    <!-- Hidden Modal -->
+    <div class="modal" id="surpriseModal">
+        <div class="modal-content glass-card">
+            <div style="font-size: 4rem; color: var(--primary); margin-bottom: 1rem;">
+                <i class="fas fa-gem"></i>
+            </div>
+            <h2>You Are Precious</h2>
+            <p style="margin: 1rem 0; color: #cbd5e1; max-width: 400px; line-height: 1.6;">
+                In the vast expanse of the universe, finding you was my greatest discovery.
+                I promise to cherish this bond across all dimensions.
+            </p>
+            <h3 class="text-gradient" style="font-size: 2rem; margin-top: 2rem;">I Love You 3000</h3>
+            <button class="glow-btn" style="margin-top: 2rem;" onclick="closeModal()">Close</button>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <!-- Three.js -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- GSAP -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+
+    <script>
+        // --- Custom Cursor Logic ---
+        const cursorDot = document.querySelector('.cursor-dot');
+        const cursorOutline = document.querySelector('.cursor-outline');
+
+        window.addEventListener('mousemove', (e) => {
+            const posX = e.clientX;
+            const posY = e.clientY;
+
+            cursorDot.style.left = `${posX}px`;
+            cursorDot.style.top = `${posY}px`;
+
+            // Adding a slight delay/lag to the outline for smooth feel
+            cursorOutline.animate({
+                left: `${posX}px`,
+                top: `${posY}px`
+            }, { duration: 500, fill: "forwards" });
+        });
+
+        // --- Three.js Background (Starfield/Particles) ---
+        const initThreeJS = () => {
+            const canvas = document.querySelector('#webgl-bg');
+            const scene = new THREE.Scene();
+            const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+            const renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true });
+
+            renderer.setSize(window.innerWidth, window.innerHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+
+            // Particles
+            const particlesGeometry = new THREE.BufferGeometry();
+            const particlesCount = 2000; // lots of stars
+            const posArray = new Float32Array(particlesCount * 3);
+
+            for (let i = 0; i < particlesCount * 3; i++) {
+                // Spread particles randomly in a large box
+                posArray[i] = (Math.random() - 0.5) * 15;
+            }
+
+            particlesGeometry.setAttribute('position', new THREE.BufferAttribute(posArray, 3));
+
+            // Material
+            const material = new THREE.PointsMaterial({
+                size: 0.005,
+                color: 0xff3366, // Primary brand color
+                transparent: true,
+                opacity: 0.8,
+            });
+
+            // Mesh
+            const particlesMesh = new THREE.Points(particlesGeometry, material);
+            scene.add(particlesMesh);
+
+            // Lighting (Ambient)
+            const light = new THREE.AmbientLight(0xffffff, 0.5);
+            scene.add(light);
+
+            camera.position.z = 2;
+
+            // Interactive Mouse Movement
+            let mouseX = 0;
+            let mouseY = 0;
+            let targetX = 0;
+            let targetY = 0;
+
+            const windowHalfX = window.innerWidth / 2;
+            const windowHalfY = window.innerHeight / 2;
+
+            document.addEventListener('mousemove', (event) => {
+                mouseX = (event.clientX - windowHalfX);
+                mouseY = (event.clientY - windowHalfY);
+            });
+
+            const clock = new THREE.Clock();
+
+            const animate = () => {
+                targetX = mouseX * 0.001;
+                targetY = mouseY * 0.001;
+
+                const elapsedTime = clock.getElapsedTime();
+
+                // Rotate entire system slowly
+                particlesMesh.rotation.y = .1 * elapsedTime;
+                particlesMesh.rotation.x = .05 * elapsedTime;
+
+                // React to mouse
+                particlesMesh.rotation.y += 0.05 * (targetX - particlesMesh.rotation.y);
+                particlesMesh.rotation.x += 0.05 * (targetY - particlesMesh.rotation.x);
+
+                renderer.render(scene, camera);
+                window.requestAnimationFrame(animate);
+            };
+
+            animate();
+
+            // Handle Resize
+            window.addEventListener('resize', () => {
+                camera.aspect = window.innerWidth / window.innerHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(window.innerWidth, window.innerHeight);
+            });
+        }
+
+        initThreeJS();
+
+        // --- GSAP Animations ---
+        gsap.registerPlugin(ScrollTrigger);
+
+        // Header Entry
+        const tl = gsap.timeline();
+        tl.to("h1", { opacity: 1, duration: 1.5, y: 0, ease: "power4.out" })
+            .to(".subtitle", { opacity: 1, duration: 1, y: 0 }, "-=1")
+            .to(".scroll-indicator", { opacity: 1, duration: 1 }, "-=0.5");
+
+        // Scroll Reveal Elements
+        gsap.utils.toArray('.element-animate').forEach(element => {
+            gsap.from(element, {
+                scrollTrigger: {
+                    trigger: element,
+                    start: "top 85%",
+                    toggleActions: "play none none reverse"
+                },
+                y: 50,
+                opacity: 0,
+                duration: 1,
+                ease: "power3.out"
+            });
+        });
+
+        // Love Meter Logic
+        const runAnalysisBtn = document.getElementById('runAnalysis');
+        const meterFill = document.getElementById('meterFill');
+        const meterValue = document.getElementById('meterValue');
+
+        runAnalysisBtn.addEventListener('click', () => {
+            runAnalysisBtn.disabled = true;
+            runAnalysisBtn.innerText = "Scanning...";
+
+            let progress = 0;
+            const interval = setInterval(() => {
+                progress += Math.random() * 5;
+                if (progress >= 100) {
+                    progress = Infinity; // Joke value
+                    clearInterval(interval);
+                    meterFill.style.width = '100%';
+                    meterValue.innerHTML = "∞%"; // Infinity symbol
+
+                    meterValue.style.transform = "scale(1.5)";
+                    meterValue.style.textShadow = "0 0 20px var(--primary)";
+
+                    runAnalysisBtn.innerText = "Analysis Complete: Infinite Love";
+                } else {
+                    meterFill.style.width = `${Math.min(progress, 100)}%`;
+                    meterValue.innerText = `${Math.floor(progress)}%`;
+                }
+            }, 50);
+        });
+
+        // Surprise Modal
+        const modal = document.getElementById('surpriseModal');
+        const surpriseBtn = document.getElementById('finalSurprise');
+
+        surpriseBtn.addEventListener('click', () => {
+            modal.classList.add('active');
+
+            // Optional: Play Sound
+            const audio = new Audio('https://assets.mixkit.co/music/preview/mixkit-sci-fi-positive-notification-266.mp3');
+            audio.volume = 0.4;
+            audio.play().catch(e => console.log('Audio autoplay blocked'));
+        });
+
+        function closeModal() {
+            modal.classList.remove('active');
+        }
+
+        // Action Buttons Messages
+        function showMessage(type) {
+            const messages = {
+                'message': "Sending a quantum packet of love directly to your heart! 🚀",
+                'kiss': "Initiating digital kiss sequence... Mwah! 💋",
+                'flower': "Refracting light to create a holographic bouquet for you! 💐",
+                'music': "Streaming the symphony of our memories... 🎵"
+            };
+            alert(messages[type]);
+        }
+    </script>
+</body>
+
+</html>
