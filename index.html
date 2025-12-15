@@ -415,6 +415,145 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
         }
+
+        /* Cosmic Connection Section */
+        .cosmic-section {
+            position: relative;
+            height: 60vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: 4rem;
+            perspective: 1000px;
+        }
+
+        .orbit-system {
+            position: relative;
+            width: 600px;
+            height: 300px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            transform-style: preserve-3d;
+        }
+
+        .planet-wrapper {
+            position: absolute;
+            border-radius: 50%;
+            padding: 10px;
+            background: rgba(255, 51, 102, 0.1);
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 51, 102, 0.3);
+            box-shadow: 0 0 30px rgba(255, 51, 102, 0.1);
+            transition: transform 0.1s ease-out;
+        }
+
+        .planet {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            background-size: cover;
+            background-position: center;
+            position: relative;
+            overflow: hidden;
+            box-shadow: inset 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .planet::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.2), transparent 50%);
+        }
+
+        .planet-left {
+            left: 50px;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .planet-right {
+            right: 50px;
+            animation: float 6s ease-in-out infinite reverse;
+        }
+
+        .connection-beam {
+            position: absolute;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--primary), transparent);
+            width: 200px;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: -1;
+            opacity: 0.6;
+            animation: pulse-beam 3s infinite;
+        }
+
+        .connection-icon {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            font-size: 2rem;
+            color: var(--primary);
+            background: var(--dark);
+            width: 50px;
+            height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            border: 1px solid var(--primary);
+            box-shadow: 0 0 15px var(--primary);
+            z-index: 2;
+            animation: heart-beat 1.5s infinite;
+        }
+
+        @keyframes float {
+
+            0%,
+            100% {
+                transform: translateY(0) rotate(0deg);
+            }
+
+            50% {
+                transform: translateY(-20px) rotate(2deg);
+            }
+        }
+
+        @keyframes pulse-beam {
+
+            0%,
+            100% {
+                opacity: 0.3;
+                width: 180px;
+            }
+
+            50% {
+                opacity: 0.8;
+                width: 220px;
+                box-shadow: 0 0 20px var(--primary);
+            }
+        }
+
+        @keyframes heart-beat {
+
+            0%,
+            100% {
+                transform: translate(-50%, -50%) scale(1);
+            }
+
+            15% {
+                transform: translate(-50%, -50%) scale(1.2);
+            }
+
+            30% {
+                transform: translate(-50%, -50%) scale(1);
+            }
+        }
     </style>
 </head>
 
@@ -437,6 +576,26 @@
                 <i class="fas fa-chevron-down" style="color: var(--text-muted);"></i>
             </div>
         </header>
+
+        <!-- Cosmic Union Section -->
+        <div class="cosmic-section">
+            <div class="orbit-system" id="orbitSystem">
+                <div class="connection-beam"></div>
+                <div class="connection-icon"><i class="fas fa-heart"></i></div>
+
+                <div class="planet-wrapper planet-left" data-speed="0.05">
+                    <div class="planet"
+                        style="background-image: url('images/WhatsApp%20Image%202025-12-15%20at%2015.31.27_3b98716a.jpg');">
+                    </div>
+                </div>
+
+                <div class="planet-wrapper planet-right" data-speed="0.05">
+                    <div class="planet"
+                        style="background-image: url('images/WhatsApp%20Image%202025-12-15%20at%2015.31.41_a3075ca3.jpg');">
+                    </div>
+                </div>
+            </div>
+        </div>
 
         <!-- Sections -->
         <h2 style="text-align: center; font-size: 2.5rem; margin-top: 2rem;">Why You?</h2>
@@ -495,28 +654,36 @@
         <h2 style="text-align: center; font-size: 2.5rem;">Visual Memories</h2>
         <div class="gallery-grid">
             <div class="photo-card element-animate">
-                <div class="photo-bg"><i class="fas fa-camera"></i></div>
+                <div class="photo-bg"
+                    style="background-image: url('images/IMG-20250824-WA0021.jpg'); background-size: cover; background-position: center;">
+                </div>
                 <div class="photo-overlay">
                     <h3>The Beginning</h3>
                     <p>Where it all started.</p>
                 </div>
             </div>
             <div class="photo-card element-animate">
-                <div class="photo-bg"><i class="fas fa-smile-beam"></i></div>
+                <div class="photo-bg"
+                    style="background-image: url('images/IMG-20251022-WA0016.jpg'); background-size: cover; background-position: center;">
+                </div>
                 <div class="photo-overlay">
                     <h3>Your Smile</h3>
                     <p>My favorite view.</p>
                 </div>
             </div>
             <div class="photo-card element-animate">
-                <div class="photo-bg"><i class="fas fa-plane"></i></div>
+                <div class="photo-bg"
+                    style="background-image: url('images/IMG-20251212-WA0001.jpg'); background-size: cover; background-position: center;">
+                </div>
                 <div class="photo-overlay">
                     <h3>Adventures</h3>
                     <p>Exploring the world together.</p>
                 </div>
             </div>
             <div class="photo-card element-animate">
-                <div class="photo-bg"><i class="fas fa-hand-holding-heart"></i></div>
+                <div class="photo-bg"
+                    style="background-image: url('images/IMG-20251215-WA0005.jpg'); background-size: cover; background-position: center;">
+                </div>
                 <div class="photo-overlay">
                     <h3>Forever</h3>
                     <p>Walking hand in hand.</p>
@@ -758,6 +925,18 @@
             };
             alert(messages[type]);
         }
+
+        // --- Cosmic Duo Parallax ---
+        const orbitSystem = document.getElementById('orbitSystem');
+
+        document.addEventListener('mousemove', (e) => {
+            if (!orbitSystem) return;
+
+            const x = (window.innerWidth / 2 - e.pageX) / 25;
+            const y = (window.innerHeight / 2 - e.pageY) / 25;
+
+            orbitSystem.style.transform = `rotateY(${x}deg) rotateX(${y}deg)`;
+        });
     </script>
 </body>
 
